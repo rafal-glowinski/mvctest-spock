@@ -1,7 +1,9 @@
 buildscript {
 	ext {
-		kotlinVersion = '1.2.20'
+		kotlinVersion = '1.2.30'
+        jacksonVersion = '2.9.3'
 		springBootVersion = '1.5.10.RELEASE'
+        spockVersion = '1.2-groovy-2.4-SNAPSHOT'
 	}
 	repositories {
 		mavenCentral()
@@ -14,13 +16,13 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'kotlin-spring'
-apply plugin: 'eclipse'
+apply plugin: 'groovy'
 apply plugin: 'org.springframework.boot'
 
 group = 'com.rg'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
+
 compileKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]
@@ -36,13 +38,29 @@ compileTestKotlin {
 
 repositories {
 	mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+}
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
-	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile(
+            'org.springframework.boot:spring-boot-starter-web',
+
+            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
+            "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}",
+            
+            "com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}"
+    )
+
+	testCompile(
+        'org.springframework.boot:spring-boot-starter-test',
+        "org.spockframework:spock-core:${spockVersion}",
+        "org.spockframework:spock-spring:${spockVersion}",
+        'cglib:cglib-nodep:3.1'
+    )
 }

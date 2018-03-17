@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
-class WebmvctestApplication
+open class WebMvcTestApplication
 
 fun main(args: Array<String>) {
-    SpringApplication.run(WebmvctestApplication::class.java, *args)
+    SpringApplication.run(WebMvcTestApplication::class.java, *args)
 }
