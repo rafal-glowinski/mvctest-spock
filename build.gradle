@@ -54,7 +54,8 @@ dependencies {
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
             "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}",
             
-            "com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}"
+            "com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}",
+            'org.hibernate:hibernate-validator:5.4.2.Final'
     )
 
 	testCompile(
