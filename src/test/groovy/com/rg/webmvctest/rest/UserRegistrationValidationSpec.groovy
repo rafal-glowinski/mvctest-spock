@@ -1,10 +1,13 @@
 package com.rg.webmvctest.rest
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.rg.webmvctest.BaseWebMvcSpec
 import com.rg.webmvctest.domain.RegistrationService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpStatus
 import spock.lang.Unroll
 import spock.mock.DetachedMockFactory
 
@@ -16,6 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = [UserRegistrationController])
 class UserRegistrationValidationSpec extends BaseWebMvcSpec {
+
+    @Autowired
+    ObjectMapper objectMapper
 
     @Unroll
     def "should not allow to create a registration with an invalid email address: #emailAddress"() {
@@ -38,6 +44,38 @@ class UserRegistrationValidationSpec extends BaseWebMvcSpec {
         results.andExpect(jsonPath("\$.errors[0].code").value("MethodArgumentNotValidException"))
         results.andExpect(jsonPath("\$.errors[0].path").value("emailAddress"))
         results.andExpect(jsonPath("\$.errors[0].userMessage").value(userMessage))
+
+        where:
+        emailAddress              || userMessage
+        "john.wayne(at)gmail.com" || "Invalid email address."
+        "abcdefg"                 || "Invalid email address."
+        ""                        || "Invalid email address."
+        null                      || "Email must be provided."
+    }
+
+    @Unroll
+    def "should not allow to create a registration with an invalid email address: #emailAddress - spock assertions"() {
+        given:
+        Map request = [
+                email_address : emailAddress,
+                name          : 'John',
+                last_name     : 'Wayne'
+        ]
+
+        when:
+        def result = doRequest(
+                post("/registrations").contentType(APPLICATION_JSON).content(toJson(request))
+        ).andReturn()
+
+        then:
+        result.response.status == HttpStatus.UNPROCESSABLE_ENTITY.value()
+
+        and:
+        with (objectMapper.readValue(result.response.contentAsString, Map)) {
+            it.errors[0].code == "MethodArgumentNotValidException"
+            it.errors[0].path == "emailAddress"
+            it.errors[0].userMessage == userMessage
+        }
 
         where:
         emailAddress              || userMessage
