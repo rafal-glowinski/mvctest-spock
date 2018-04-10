@@ -47,16 +47,16 @@ class SimplestUserRegistrationSpec extends Specification {
         )
 
         when:
-        def results = mvc.perform(post("/registrations").contentType(APPLICATION_JSON).content(toJson(request)))
+        def results = mvc.perform(post('/registrations').contentType(APPLICATION_JSON).content(toJson(request)))
 
         then:
         results.andExpect(status().isCreated())
 
         and:
-        results.andExpect(jsonPath("\$.registration_id").value("registration-id-1"))
-        results.andExpect(jsonPath("\$.email_address").value("john.wayne@gmail.com"))
-        results.andExpect(jsonPath("\$.name").value("John"))
-        results.andExpect(jsonPath("\$.last_name").value("Wayne"))
+        results.andExpect(jsonPath('$.registration_id').value('registration-id-1'))
+        results.andExpect(jsonPath('$.email_address').value('john.wayne@gmail.com'))
+        results.andExpect(jsonPath('$.name').value('John'))
+        results.andExpect(jsonPath('$.last_name').value('Wayne'))
     }
 
     def "should pass user registration details to domain component and return 'created' status - spock assertions"() {
@@ -77,7 +77,7 @@ class SimplestUserRegistrationSpec extends Specification {
 
         when:
         def response = mvc.perform(
-                post("/registrations").contentType(APPLICATION_JSON).content(toJson(request))
+                post('/registrations').contentType(APPLICATION_JSON).content(toJson(request))
         ).andReturn().response  // notice the extra call to: andReturn()
 
         then:
@@ -85,10 +85,10 @@ class SimplestUserRegistrationSpec extends Specification {
 
         and:
         with (objectMapper.readValue(response.contentAsString, Map)) {
-            it.registration_id == "registration-id-1"
-            it.email_address == "john.wayne@gmail.com"
-            it.name == "John"
-            it.last_name == "Wayne"
+            it.registration_id == 'registration-id-1'
+            it.email_address == 'john.wayne@gmail.com'
+            it.name == 'John'
+            it.last_name == 'Wayne'
         }
     }
 

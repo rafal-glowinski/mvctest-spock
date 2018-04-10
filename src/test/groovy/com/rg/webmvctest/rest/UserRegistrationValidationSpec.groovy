@@ -34,23 +34,23 @@ class UserRegistrationValidationSpec extends BaseWebMvcSpec {
 
         when:
         def results = doRequest(
-                post("/registrations").contentType(APPLICATION_JSON).content(toJson(request))
+                post('/registrations').contentType(APPLICATION_JSON).content(toJson(request))
         )
 
         then:
         results.andExpect(status().isUnprocessableEntity())
 
         and:
-        results.andExpect(jsonPath("\$.errors[0].code").value("MethodArgumentNotValidException"))
-        results.andExpect(jsonPath("\$.errors[0].path").value("emailAddress"))
-        results.andExpect(jsonPath("\$.errors[0].userMessage").value(userMessage))
+        results.andExpect(jsonPath('$.errors[0].code').value('MethodArgumentNotValidException'))
+        results.andExpect(jsonPath('$.errors[0].path').value('emailAddress'))
+        results.andExpect(jsonPath('$.errors[0].userMessage').value(userMessage))
 
         where:
         emailAddress              || userMessage
-        "john.wayne(at)gmail.com" || "Invalid email address."
-        "abcdefg"                 || "Invalid email address."
-        ""                        || "Invalid email address."
-        null                      || "Email must be provided."
+        'john.wayne(at)gmail.com' || 'Invalid email address.'
+        'abcdefg'                 || 'Invalid email address.'
+        ''                        || 'Invalid email address.'
+        null                      || 'Email must be provided.'
     }
 
     @Unroll
@@ -64,7 +64,7 @@ class UserRegistrationValidationSpec extends BaseWebMvcSpec {
 
         when:
         def result = doRequest(
-                post("/registrations").contentType(APPLICATION_JSON).content(toJson(request))
+                post('/registrations').contentType(APPLICATION_JSON).content(toJson(request))
         ).andReturn()
 
         then:
@@ -72,17 +72,17 @@ class UserRegistrationValidationSpec extends BaseWebMvcSpec {
 
         and:
         with (objectMapper.readValue(result.response.contentAsString, Map)) {
-            it.errors[0].code == "MethodArgumentNotValidException"
-            it.errors[0].path == "emailAddress"
+            it.errors[0].code == 'MethodArgumentNotValidException'
+            it.errors[0].path == 'emailAddress'
             it.errors[0].userMessage == userMessage
         }
 
         where:
         emailAddress              || userMessage
-        "john.wayne(at)gmail.com" || "Invalid email address."
-        "abcdefg"                 || "Invalid email address."
-        ""                        || "Invalid email address."
-        null                      || "Email must be provided."
+        'john.wayne(at)gmail.com' || 'Invalid email address.'
+        'abcdefg'                 || 'Invalid email address.'
+        ''                        || 'Invalid email address.'
+        null                      || 'Email must be provided.'
     }
 
     @Unroll
@@ -96,22 +96,22 @@ class UserRegistrationValidationSpec extends BaseWebMvcSpec {
 
         when:
         def results = doRequest(
-                post("/registrations").contentType(APPLICATION_JSON).content(toJson(request))
+                post('/registrations').contentType(APPLICATION_JSON).content(toJson(request))
         )
 
         then:
         results.andExpect(status().isUnprocessableEntity())
 
         and:
-        results.andExpect(jsonPath("\$.errors[0].code").value("MethodArgumentNotValidException"))
-        results.andExpect(jsonPath("\$.errors[0].path").value("name"))
-        results.andExpect(jsonPath("\$.errors[0].userMessage").value(userMessage))
+        results.andExpect(jsonPath('$.errors[0].code').value('MethodArgumentNotValidException'))
+        results.andExpect(jsonPath('$.errors[0].path').value('name'))
+        results.andExpect(jsonPath('$.errors[0].userMessage').value(userMessage))
 
         where:
         name      || userMessage
-        null      || "Name must be provided."
-        "I"       || "Name must be at least 2 characters and at most 50 characters long."
-        ""        || "Name must be at least 2 characters and at most 50 characters long."
+        null      || 'Name must be provided.'
+        'I'       || 'Name must be at least 2 characters and at most 50 characters long.'
+        ''        || 'Name must be at least 2 characters and at most 50 characters long.'
     }
 
     @TestConfiguration
