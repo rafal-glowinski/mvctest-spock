@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +29,6 @@ public class UserRegistrationController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public ExistingUserRegistrationDTO register(@RequestBody @Valid NewUserRegistrationDTO newUserRegistration) {
         UserRegistration userRegistration = registrationService.registerUser(
@@ -42,7 +40,6 @@ public class UserRegistrationController {
     }
 
     @PutMapping(path = "/{registrationId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public ExistingUserRegistrationDTO updateRegistration(
             @RequestBody @Valid NewUserRegistrationDTO newUserRegistration,
@@ -54,7 +51,6 @@ public class UserRegistrationController {
 
 
     @GetMapping
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public List<ExistingUserRegistrationDTO> getAllRegistrations() {
         return registrationService.findAllUserRegistrations().stream().map(this::asDTO).collect(Collectors.toList());

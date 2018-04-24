@@ -1,10 +1,7 @@
 package com.rg.webmvctest;
 
-import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 @SpringBootApplication
 public class WebMvcTestApplication {
@@ -14,15 +11,12 @@ public class WebMvcTestApplication {
     }
 
     /**
-     * This post-processor is required to perform validation on request body using: javax.validation.Valid
+     * For Spring Boot 1.4.x post-processor is required to perform validation on request body using: javax.validation.Valid.
+     *
+     * We don't use it here since it is a Spring Boot 1.5.x based app.
      */
-    @Bean
-    public MethodValidationPostProcessor methodValidationPostProcessor() {
-        return new MethodValidationPostProcessor();
-    }
-
-    @Bean
-    public KotlinModule kotlinModule() {
-        return new KotlinModule();
-    }
+//    @Bean
+//    public MethodValidationPostProcessor methodValidationPostProcessor() {
+//        return new MethodValidationPostProcessor();
+//    }
 }
