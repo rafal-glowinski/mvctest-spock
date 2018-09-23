@@ -4,10 +4,10 @@ import com.rg.webmvctest.domain.DuplicateRegistrationException;
 import com.rg.webmvctest.domain.RegistrationNotFoundException;
 import com.rg.webmvctest.domain.UserRegistration;
 import com.rg.webmvctest.domain.UserRegistrationRepository;
-import kotlin.text.Charsets;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +77,6 @@ public class InMemoryUserRegistrationRepository implements UserRegistrationRepos
      */
     private String generateId(String emailAddress) {
         int salt = secureRandom.nextInt();
-        return DigestUtils.md5DigestAsHex(String.format("%d%s", salt, emailAddress).getBytes(Charsets.UTF_8)).substring(0, 8);
+        return DigestUtils.md5DigestAsHex(String.format("%d%s", salt, emailAddress).getBytes(StandardCharsets.UTF_8)).substring(0, 8);
     }
 }
